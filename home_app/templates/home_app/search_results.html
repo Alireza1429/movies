@@ -1,0 +1,165 @@
+<!-- search_results.html -->
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>نتایج جستجو 🔍</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #ffd700;
+            text-shadow: 0 0 10px #ffd700, 0 0 20px #ffec7d;
+            margin-bottom: 20px;
+        }
+
+        .search-info {
+            background: rgba(255,215,0,0.1);
+            border: 2px solid #ffd700;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .search-form {
+            margin: 20px 0;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 2px solid #ffd700;
+        }
+
+        .search-btn {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #ffd700, #ffec7d);
+            color: #000;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .series-card {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,215,0,0.7);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            width: 90%;
+            max-width: 800px;
+            display: flex;
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .series-info h2 {
+            color: #ffd700;
+            margin-top: 0;
+        }
+
+        .series-image {
+            width: 200px;
+            flex-shrink: 0;
+        }
+
+        .series-image img {
+            width: 100%;
+            border-radius: 15px;
+        }
+
+        .back-btn {
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #8e2de2, #4a00e0);
+            color: #fff;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🔍 نتایج جستجو</h1>
+
+<!-- فرم جستجو در صفحه نتایج -->
+<div class="search-form">
+    <form method="get" action="{% url 'search_results' %}" class="search-box">
+        <input type="text" name="q" value="{{ search_query }}" class="search-input" placeholder="جستجو کنید...">
+        <button type="submit" class="search-btn">🔍 جستجو</button>
+    </form>
+</div>
+
+<!-- اطلاعات جستجو -->
+<div class="search-info">
+    {% if search_query %}
+        <h3>جستجو برای: "{{ search_query }}"</h3>
+        <p>تعداد نتایج: {{ results_count }}</p>
+    {% else %}
+        <h3>همه سریال‌ها</h3>
+    {% endif %}
+</div>
+
+<!-- نتایج -->
+{% for series in results %}
+<div class="series-card">
+    {% if series.image %}
+    <div class="series-image">
+        <img src="{{ series.image }}" alt="پوستر {{ series.title }}">
+    </div>
+    {% endif %}
+    <div class="series-info">
+        <h2>{{ series.title }}</h2>
+        <p><strong>ژانر:</strong> {{ series.genre }}</p>
+        <p><strong>سال ساخت:</strong> {{ series.year }}</p>
+        <p><strong>تعداد فصل:</strong> {{ series.seasons }}</p>
+        <p><strong>IMDB:</strong> {{ series.imdb }}</p>
+        {% if series.link %}
+            <p><strong>لینک:</strong> <a href="{{ series.link }}" target="_blank">مشاهده سریال</a></p>
+        {% endif %}
+    </div>
+</div>
+{% empty %}
+    <div class="search-info">
+        <h3>❌ هیچ سریالی یافت نشد</h3>
+        <p>لطفاً عبارت جستجوی خود را تغییر دهید</p>
+    </div>
+{% endfor %}
+
+
+
+<button class="back-btn" onclick="window.location.href='/'">🏠 بازگشت به خانه</button>
+
+</body>
+</html>

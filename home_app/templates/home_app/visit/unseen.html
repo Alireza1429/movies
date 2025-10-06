@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فیلم‌های ندیده شده 🎬</title>
+    <style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Vazirmatn", sans-serif;
+  background: linear-gradient(135deg, #fef3c7, #fcd34d);
+  color: #1e293b;
+  min-height: 100vh;
+}
+
+h1 {
+  text-align: center;
+  padding: 25px 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #dc2626;
+  text-shadow: 0 0 8px rgba(220,38,38,0.6);
+}
+
+.movie-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+  padding: 20px;
+}
+
+.movie-card {
+  background: rgba(255,255,255,0.85);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(5px);
+  position: relative;
+  text-align: center;
+  padding-bottom: 15px;
+}
+
+.movie-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+.movie-card img {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  border-bottom: 2px solid #f87171;
+}
+
+.movie-card:hover img {
+  transform: scale(1.05);
+}
+
+.no-poster {
+  width: 100%;
+  height: 340px;
+  display: grid;
+  place-items: center;
+  background: #fde68a;
+  color: #b91c1c;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.movie-card p {
+  margin: 10px 0 0 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #b91c1c;
+}
+
+/* بک‌گراند دکمه بازگشت جذاب و متحرک */
+.back-btn {
+  display: block;
+  margin: 30px auto;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #fff;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+  background: linear-gradient(270deg, #f87171, #f97316, #facc15, #22c55e, #3b82f6);
+  background-size: 1000% 1000%;
+  animation: gradientBG 10s ease infinite;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.back-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.fixed-button button {
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background: linear-gradient(45deg, #10b981, #3b82f6);
+  color: #fff;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+
+.fixed-button button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
+    </style>
+</head>
+<body>
+    <h1>🎬 فیلم‌های ندیده شده</h1>
+
+    <div class="movie-grid">
+        {% for movie in movies %}
+        <div class="movie-card">
+            {% if movie.poster %}
+                <img src="{{ movie.poster.url }}" alt="پوستر {{ movie.title }}">
+            {% else %}
+                <div class="no-poster">❌ پوستر موجود نیست</div>
+            {% endif %}
+            <p>{{ movie.title }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <button class="back-btn" onclick="window.location.href='/'">🏠 بازگشت به خانه</button>
+
+    <div class="fixed-button">
+        <form action="{% url 'random_movie' %}" method="get">
+            <button type="submit">🎲 فیلم رندوم</button>
+        </form>
+    </div>
+</body>
+</html>
